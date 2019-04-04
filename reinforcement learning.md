@@ -77,6 +77,47 @@ We replace the reward of the state with the Q-function and replace the baseline 
 \nabla_{\theta}J(\theta) \approx \sum_{t \geq 0}{}(\sum_{t' \geq t }{Q^{\pi\theta}(s_t, a_t) - V^{\pi\theta}(s_t)})\nabla_\theta\log\pi_\theta(a_t|s_t)
 \]
 
+### Off-Policy Policy Gradient Method
+
+Many vanilla learning algorithms are on-policy, however on-policy algorithms have issues of sample inefficiency and exploration inefficiency.
+
+There are several advantages of off-policy but two main advantages are that training doesn't require full trajectories, and that sample collection follows a different policy than the target policy which improves exploration.
+
+Our objective function in off-policy policy gradient is defined as the following:
+
+\[
+J(\theta) = \sum_{s \in S}{d^{\beta}(s)}\sum_{a \in A}{Q^\pi(s,a)\pi_\theta (a|s)}= \mathbb{E}_{s \sim d^{\beta}(s)}[\sum_{a \in A}{Q^\pi(s,a)\pi_\theta (a|s)}]
+\]
+
+Note: $d^{\beta}(s)$ := the stationary distribution of the behaviour policy $\beta$;  $d^{\beta}(s) = \lim_{t \rightarrow \infty}{P(S_t = s | S_0, \beta)}$
+
+Since $a \sim \beta(a|s)$
+
+\[
+\nabla_{\theta}J(\theta) = \nabla_{\theta} \mathbb{E}_{s \sim d^{\beta}(s)}[\sum_{a \in A}{Q^\pi(s,a)\pi_\theta (a|s)}]
+\]
+
+
+\[
+\nabla_{\theta}J(\theta) = \mathbb{E}_{s \sim d^{\beta}(s)}[\sum_{a \in A}{\nabla_{\theta}Q^\pi(s,a)\pi_\theta (a|s)} + \sum_{a \in A}{Q^\pi(s,a)\nabla_{\theta} \pi_\theta (a|s)} ]
+\]
+
+by P3
+
+\[
+\nabla_{\theta}J(\theta) \approx \mathbb{E}_{s \sim d^{\beta}(s)}[\sum_{a \in A}{Q^\pi(s,a)\nabla_{\theta} \pi_\theta (a|s)} ]
+\]
+
+
+\[
+\nabla_{\theta}J(\theta) \approx \mathbb{E}_{s \sim d^{\beta}(s)}[\sum_{a \in A}{\beta(a|s) \frac{\pi_\theta(a|s)}{\beta(a|s)} Q^\pi(s,a) \frac{\nabla_{\theta}\pi_\theta (a|s)}{\pi_\theta(a|s)}} ]
+\]
+
+
+\[
+\nabla_{\theta}J(\theta) \approx \mathbb{E}_{\beta}[\frac{\pi_\theta(a|s)}{\beta(a|s)} Q^\pi(s,a) \nabla_{\theta}\log\pi_\theta (a|s)]
+\]
+
 ### Actor-Critic methods
 We can learn Q and V using Q-learning methods. Then we combine Policy Gradients and Q-Learning to train an **actor** (the policy) and a **critic** (the Q-function).
 
@@ -95,6 +136,12 @@ $\tau$ := trajectory i.e. a sequence of state-action transitions of arbitrary le
 
 $\theta$ := weights of function approximator
 
+On-Policy := Training samples are collected according to the target policy i.e. samples collected "live"
+
+Off-Policy := Training samples are collected according to a behaviour policy that selects which or which parts of trajectories to sample for training purposes
+
+Behaviour Policy $\beta(a|s)$ := the policy that decides how to sample trajectories for off-policy algorithms
+
 ### Proof Appendix
 
 
@@ -112,6 +159,29 @@ p(\tau;\theta) = \prod_{t \geq 0}{p(s_{t+1}|s_{t}, a_{t})\pi_{\theta}(a_{t}|s_{t
 \nabla_\theta\log{p(\tau;\theta)} = \sum_{t \geq 0}\nabla_\theta\log\pi_\theta(a_t|s_t)
 \]
 
+
 ##### P2. Introducing baseline does not create bias in the gradient estimator for PG Methods
 
 https://arxiv.org/pdf/1506.02438.pdf
+
+
+##### P3. Policy Improvement Theory ~ Justification for not needing the gradient of the Q function in OPPG
+
+Given any parameter u, let
+
+\[ \textbf{u}' = \textbf{u} + \alpha \textbf{g(u)} \]
+
+Then there exists an $\epsilon > 0$ s.t. $\forall \alpha$ s.t. $\epsilon > \alpha > 0$
+
+\[ J(\textbf{u}') \geq J(\textbf{u})\]
+
+Proof in appendix: https://arxiv.org/pdf/1205.4839.pdf
+
+### Algorithms Appendix
+
+##### A1. Off-policy Policy Gradient Algorithms
+
+https://arxiv.org/pdf/1205.4839.pdf
+
+Initial Variables
+- $\def\Tau{{\rm T}} \Tau = (\tau_0,\tau_1,...)$ a collection of trajectories
