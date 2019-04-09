@@ -35,6 +35,8 @@ Thus:
 \mathbb{E}_{\tau \sim p(\tau;\theta)}[r(\tau)\nabla_{\theta}\log{p(\tau;\theta)}]
 \]
 
+Refer to P1 for the importance of this result.
+
 We define our unbiased estimator:
 
 \[
@@ -102,7 +104,7 @@ Since $a \sim \beta(a|s)$
 \nabla_{\theta}J(\theta) = \mathbb{E}_{s \sim d^{\beta}(s)}[\sum_{a \in A}{\nabla_{\theta}Q^\pi(s,a)\pi_\theta (a|s)} + \sum_{a \in A}{Q^\pi(s,a)\nabla_{\theta} \pi_\theta (a|s)} ]
 \]
 
-by P3
+by **P3**
 
 \[
 \nabla_{\theta}J(\theta) \approx \mathbb{E}_{s \sim d^{\beta}(s)}[\sum_{a \in A}{Q^\pi(s,a)\nabla_{\theta} \pi_\theta (a|s)} ]
@@ -184,4 +186,6 @@ Proof in appendix: https://arxiv.org/pdf/1205.4839.pdf
 https://arxiv.org/pdf/1205.4839.pdf
 
 Initial Variables
-- $\def\Tau{{\rm T}} \Tau = (\tau_0,\tau_1,...)$ a collection of trajectories
+- $\def\Tau{{\rm T}} \Tau = (\tau_0,\tau_1,...)$ := a collection of trajectories
+- $\beta$ := defined as the behaviour Policy
+- $\pi_{\theta}$ := our target policy represented by a function approximator with initial weights $\theta_0$
