@@ -43,6 +43,21 @@ We define our unbiased estimator:
 \nabla_{\theta}J(\theta) \approx \sum_{t \geq 0}r(\tau)\nabla_\theta\log\pi_\theta(a_t|s_t)
 \]
 
+### Algorithm
+
+1. Initialize s, $\theta$
+2. While not converged (For each episode):
+
+    1. For t = 1, ..., T (get trajectory $\tau$)
+
+        1. Get and record action $a$ from $\pi_\theta$
+        2. Perform action $a$ and record reward $r_t$ and state $s'$
+    2. Apply discounts to $r(\tau)$ and normalize
+    3. Update $\theta \leftarrow \theta + \alpha_\theta\nabla_{\theta}J(\theta)$ where $\nabla_{\theta}J(\theta) = \sum_{t \geq 0}r(\tau)\nabla_\theta\log\pi_\theta(a_t|s_t)$
+
+
+### Possible Improvements
+
 Note: If $r(\tau)$ is high/low, probabilities of actions are pushed up/down
 
 Enhance probabilities by future rewards:
@@ -129,6 +144,14 @@ We can learn Q and V using Q-learning methods. Then we combine Policy Gradients 
 - Can now introduce techniques from Q-learning
 - Advantage function $A^{\pi}(s,a)$ := $Q^{\pi}(s,a)$ $-$ $V^{\pi}(s)$
 
+1. Initialize s, $\theta$, w
+2. While not converged:
+
+    1. Get next action $a$ from policy
+    2. Get reward $r_t$
+    3. Get state $s'$
+    4. Update $\theta \leftarrow \theta + \alpha_\theta A_w(s,a)\nabla_\theta\log{\pi_\theta(a|s)}$
+    5.
 
 
 
