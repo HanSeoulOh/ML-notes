@@ -151,7 +151,6 @@ We can learn Q and V using Q-learning methods. Then we combine Policy Gradients 
     2. Get reward $r_t$
     3. Get state $s'$
     4. Update $\theta \leftarrow \theta + \alpha_\theta A_w(s,a)\nabla_\theta\log{\pi_\theta(a|s)}$
-    5.
 
 
 
