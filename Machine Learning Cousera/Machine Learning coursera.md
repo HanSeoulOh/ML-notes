@@ -100,6 +100,17 @@ Feature scaling is when you let $\textbf{x} = \frac{\textbf{x}}{\max(\textbf{x})
 
 Mean normalization is when you let $\textbf{x} = \frac{\textbf{x} - \mu(\textbf{x})}{\sigma(\textbf{x})}$
 
+### Module 3: Non-Linear Representation
+
+Using explicit ways to formulate a non-linear hypothesis using polynomial terms can be a very inefficient task. Neural networks are a way to efficiently fit an arbitrary non-linear function to data.
+
+#### Model Representation
+
+We have our bias $x_0$, and inputs $(x_1, ..., x_n)^T$ we define Layer 1 as $X = (x_0, x_1, ..., x_n)^T$
+
+We define Layer 1 as: $A^{(i)} = g(X^T\Theta^{(1)})$. Layer $i$ where $i > 1$ as: $A^{(i)} = g(g(A^{(i-1)T}\Theta^{(i)})$, where $\Theta^{(i)} \in R^{s_{i+1} \times (s_i + 1) }$ is the matrix of weights mapping values from Layer $i$ to Layer $i+1$
+
+For a neural network of L layers, $h_\Theta(x) = A^{(L)} = g(A^{(L-1)T}\Theta^{(L-1)})$
 
 
 
