@@ -27,15 +27,6 @@ presentation:
 
 <!-- slide -->
 
-### What RL encompasses
-
-- Control Theory: Dynamics are unknown
-- DP: May not have optimal substructure
-- ABM: Heuristics are huge assumptions
-- Evolutionary Algos: Poor convergence for dynamic and stochastic systems
-
-<!-- slide -->
-
 ### RL Framework
 
 - An environment is formally described as a Markov Decision Process defined as a tuple $(S, A, P, R, \gamma)$
@@ -44,6 +35,15 @@ presentation:
 - $P$ is the state transition probability function
 - $R$ is a reward function
 - $\gamma$ is the discount factor *
+
+<!-- slide -->
+
+### Why use RL?
+
+- Control Theory: Dynamics must be known
+- DP: Must have optimal substructure
+- ABM: Hardcoded behaviour
+- Evolutionary Algos: Poor convergence for dynamic and stochastic systems
 
 <!-- slide -->
 
@@ -60,16 +60,11 @@ presentation:
 - In practice, RL is about the estimation of $\pi, V, Q$ which are theoretically equivalent methods, but with different practical considerations
 
 <!-- slide -->
-![](unifiedview.png)
-
-<!-- slide -->
-![](unifiedviewMethods.png)
-<!-- slide -->
 ### State Value Function Approximation
 
 - Here $\tau = (s_t, a_t, r_t, s_{t+1}, a_{t+1}, r_{t+1}, ...)$
 - Methods that involve the estimation of V in the following form:
-\[V(s) = \mathbb{E}_\pi [R(\tau)|S_t = s]\]
+\[V_\pi(s) = \mathbb{E}_\pi [R(\tau)|S_t = s]\]
 - Can't be used for many applications in RL
 - $V_\pi(s) = \mathbb{E}_\pi [r_t + \gamma (r_{t+1} + V_\pi(s'))|s_t = s]$
 
@@ -77,36 +72,26 @@ presentation:
 ### State-Action (Q) Value Function Approximation
 
 - Here $\tau = (s_t, a_t, r_t, s_{t+1}, a_{t+1}, r_{t+1}, ...)$
-- Methods that involve the estimation of V in the following form:
+- Methods that involve the estimation of Q in the following form:
 \[Q_\pi(s,a) = \mathbb{E}_\pi [R(\tau)|S_t = s, A_t = a]\]
 - Note that $V_\pi(s) = \max_{a}Q_\pi(s,a)$
 
 <!-- slide -->
 ### Policy Function Approximation
 - In the previous examples, the policy $\pi$ can be derived
-- Why not just learn $\pi$ directly?
+- Idea: why not just learn $\pi$ directly?
 - $\pi(s) = \argmax_{a}\mathbb{E}_{\tau \sim \pi}[R(\tau)| s]$
 - $\pi(s) \equiv P(a | s, \theta)$
 
 <!-- slide -->
 ### Implementation
-- Many choices of cost functions, typically use $J(\theta) = \mathbb{E}_{\tau \sim p(\tau;\theta)}[R(\tau)]$
-- Choose learning method based on what fits the environment best
-- Proceed to use gradient descent
-
-
-<!-- slide -->
-### Monte Carlo Policy Gradient
-$J(\theta) = \mathbb{E}_{\tau \sim p(\tau;\theta)}[R(\tau)]$
-\[
-\nabla_{\theta}J(\theta) = \int_{\tau}r(\tau)\nabla_{\theta}p(\tau;\theta)d\tau
-\]
-
+- Many choices of cost functions, typically: \[J(\theta) = \mathbb{E}_{\tau \sim p(\tau;\theta)}[R(\tau)]\]
+- Proceed to use gradient descent:
 \[
 \nabla_{\theta}J(\theta) \approx \mathbb{E}_{\tau \sim p(\tau;\theta)} [\sum_{t \geq 0}r(\tau)\nabla_\theta\log\pi_\theta(a_t|s_t)]
 \]
 
-Gradient Update
+Gradient Update:
 \[
 \theta \leftarrow \theta + \alpha \nabla_{\theta}J(\theta)
 \]
@@ -147,6 +132,12 @@ Gradient Update
 <!-- slide -->
 ### Recent Results
 ![](learned_distribution.png)
+
+<!-- slide -->
+![](unifiedview.png)
+
+<!-- slide -->
+![](unifiedviewMethods.png)
 
 <!-- slide -->
 ### Appendix
